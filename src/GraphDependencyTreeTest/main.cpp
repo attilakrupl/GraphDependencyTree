@@ -12,11 +12,31 @@ using namespace nTests;
 int main( [[maybe_unused]] int    argc,
           [[maybe_unused]] char** argv )
 {
-    const int lInitialTestCaseResult = GraphDependencyTreeTest::InitialTestCase();
-
-    if ( lInitialTestCaseResult != 0 )
     {
-        return lInitialTestCaseResult;
+        const int lTestResult = GraphDependencyTreeTest::InitialTestCase();
+
+        if ( lTestResult != 0 )
+        {
+            return lTestResult;
+        }
+    }
+
+    {
+        const int lTestResult = GraphDependencyTreeTest::CyclicGraphFailingTestCase();
+
+        if ( lTestResult != 0 )
+        {
+            return lTestResult;
+        }
+    }
+
+    {
+        const int lTestResult = GraphDependencyTreeTest::InvalidNodeIDTestCase();
+
+        if ( lTestResult != 0 )
+        {
+            return lTestResult;
+        }
     }
 
     return 0;

@@ -41,3 +41,51 @@ int GraphDependencyTreeTest::InitialTestCase()
 
     return 0;
 }
+
+int GraphDependencyTreeTest::CyclicGraphFailingTestCase()
+{
+    try
+    {
+        nGraph::Graph lGraph;
+
+        lGraph.AddEdge( 'a', 'g' );
+        lGraph.AddEdge( 'g', 'h' );
+        lGraph.AddEdge( 'h', 'a' );
+
+        lGraph.PrintDependencyTree();
+    }
+    catch( const std::runtime_error& aException )
+    {
+        return 0;
+    }
+    catch( ... )
+    {
+        std::cout << "Unexpected error occurred" << std::endl;
+        return -2;
+    }
+
+    std::cout << "Test result is false positive" << std::endl;
+    return -3;
+}
+
+int GraphDependencyTreeTest::InvalidNodeIDTestCase()
+{
+    try
+    {
+        nGraph::Graph lGraph;
+
+        lGraph.AddEdge( 'A', 'g' );
+    }
+    catch( const std::runtime_error& aException )
+    {
+        return 0;
+    }
+    catch( ... )
+    {
+        std::cout << "Unexpected error occurred" << std::endl;
+        return -2;
+    }
+
+    std::cout << "Test result is false positive" << std::endl;
+    return -3;
+}

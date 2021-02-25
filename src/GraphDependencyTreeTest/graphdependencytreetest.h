@@ -20,5 +20,19 @@ namespace nTests
          * \return a negative error code in case of error, 0 otherwise
          */
         static int InitialTestCase();
+
+        /*!
+         * Cyclic graph check test
+         *
+         * \return a negative error code in case of error, 0 otherwise
+         */
+        static int CyclicGraphFailingTestCase();
+
+        /*!
+         * Invalid node ID test
+         *
+         * \return a negative error code in case of error, 0 otherwise
+         */
+        static int InvalidNodeIDTestCase();
     };
 }
