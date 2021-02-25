@@ -1,0 +1,15 @@
+*.user
+build
+/out
+/install
+/.vs/test3
+/.vs/cmake.db
+/.vs/CMake Overview
+/.vs/VSWorkspaceState.json
+/.vs/slnx.sqlite
+/.vs/ProjectSettings.json
+/resources/test-store/self_signed
+/.vs/GraphDependencyTree/config/applicationhost.config
+/.vs/GraphDependencyTree/v16/ipch/AutoPCH
+/.vs/GraphDependencyTree/v16
+/.vs/tasks.vs.json
