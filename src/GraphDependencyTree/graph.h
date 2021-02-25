@@ -16,8 +16,6 @@ namespace nGraph
     {
     private:
         std::map<char, std::list<char>> mAdjacencyMap;                                                                                     /*!< The adjacency map                                                   */
-        std::set<char>                  mFromNodes;                                                                                        /*!< The nodes from which there is at least one edge directed to another */
-        std::set<char>                  mToNodes;                                                                                          /*!< The nodes to which there is at least one adge directed from another */
         std::map<char, int>             mDepthMap;                                                                                         /*!< The depth map of the nodes                                          */
 
     private:
@@ -45,6 +43,27 @@ namespace nGraph
          */
         void CalculateDepths();
 
+        /*!
+         * Finds independent nodes in graph
+         *
+         * \param   aIndependents  the independent node list
+         */
+        void FindIndependentNodes( std::list<char>& aIndependents );
+
+        /*!
+         * Creates depth tree to be printed
+         *
+         * \param  aDepthTree  the depth tree
+         */
+        void CreateDepthTree( std::map<int, std::list<char>>& aDepthTree );
+
+        /*!
+         * Does the depth tree printing
+         *
+         * \param   aDepthTree  the depth tree to be printed
+         */
+        void DoPrint( const std::map<int, std::list<char>>& aDepthTree );
+
     public:
         /*!
          * Adds edge to the graph
@@ -56,7 +75,7 @@ namespace nGraph
                       const char aToNode );
 
         /*!
-         * Prints the dependency tree of the grph
+         * Prints the dependency tree of the graph
          */
         void PrintDependencyTree();
     };

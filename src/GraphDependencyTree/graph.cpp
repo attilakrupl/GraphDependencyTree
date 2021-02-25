@@ -60,7 +60,45 @@ const bool Graph::IsCyclicHelper( const char            aNode,
 }
 
 void Graph::CalculateDepths()
-{}
+{
+    // implement BFS for calculating depths
+}
+
+void Graph::FindIndependentNodes( std::list<char>& aIndependents )
+{
+    for ( const auto& [ lKey, lValue ] : mDepthMap )
+    {
+        if ( lValue == 1 )
+        {
+            aIndependents.push_back( lKey );
+        }
+    }
+}
+
+void Graph::CreateDepthTree( std::map<int, std::list<char>>& aDepthTree )
+{
+    for ( const auto& [ lKey, lValue ] : mDepthMap )
+    {
+        aDepthTree[ lValue ].push_back( lKey );
+    }
+}
+
+void Graph::DoPrint( const std::map<int, std::list<char>>& aDepthTree )
+{
+    std::cout << "Depth\t\t" << "Nodes" << std::endl;
+
+    for ( const auto& [ lDepth, lList ] : aDepthTree )
+    {
+        std::cout << lDepth << "\t\t";
+
+        for ( const char& lNode : lList )
+        {
+            std::cout << lNode << " ";
+        }
+
+        std::cout << std::endl;
+    }
+}
 
 void Graph::AddEdge( const char aFromNode,
                      const char aToNode )
@@ -98,34 +136,18 @@ void Graph::PrintDependencyTree()
 
     std::list<char> lIndependents;
 
-    for ( const auto& [ lKey, lValue ] : mDepthMap )
+    FindIndependentNodes( lIndependents );
+
+    if ( lIndependents.empty() )
     {
-        if ( lValue == 1 )
-        {
-            lIndependents.push_back( lKey );
-        }
+        throw std::runtime_error( "No independent nodes found. Graph either has got no nodes, or graph is cyclic." );
     }
 
     CalculateDepths();
 
     std::map<int, std::list<char>> lDepthTree;
 
-    for ( const auto& [ lKey, lValue ] : mDepthMap )
-    {
-        lDepthTree[ lValue ].push_back( lKey );
-    }
+    CreateDepthTree( lDepthTree );
 
-    std::cout << "Depth\t\t" << "Nodes" << std::endl;
-
-    for ( const auto& [ lDepth, lList ] : lDepthTree )
-    {
-        std::cout << lDepth << "\t\t";
-
-        for ( const char& lNode : lList )
-        {
-            std::cout << lNode << " ";
-        }
-
-        std::cout << std::endl;
-    }
+    DoPrint( lDepthTree );
 }
