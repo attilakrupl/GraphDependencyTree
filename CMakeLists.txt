@@ -5,5 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project ("GraphDependencyTree")
 
+ENABLE_TESTING()
+
 add_subdirectory ("src/GraphDependencyTree")
 add_subdirectory ("src/GraphDependencyTreeTest")

@@ -17,5 +17,4 @@
 #include <algorithm>
 
 #include "defines.h"
-#include "streamtrait.h"
 #include "graph.h"

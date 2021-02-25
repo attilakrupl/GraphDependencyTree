@@ -7,3 +7,5 @@
 #pragma once
 
 #include "graphdependencytree.h"
+
+#include "graphdependencytreetest.h"
