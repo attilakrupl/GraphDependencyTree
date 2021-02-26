@@ -59,9 +59,50 @@ const bool Graph::IsCyclicHelper( const char            aNode,
     return false;
 }
 
-void Graph::CalculateDepths()
+void Graph::CalculateDepths( const std::list<char>& aInitialIndependents )
 {
-    // implement BFS for calculating depths
+    std::pair<int, std::queue<char>> lStackDescriptor;
+    int                              lCurrentDepthValue = 1;
+
+    for ( const char& lNode : aInitialIndependents )
+    {
+        lStackDescriptor.second.push( lNode );
+        ++lStackDescriptor.first;
+    }
+
+    CalculateDepthsBFS( lStackDescriptor, ++lCurrentDepthValue );
+}
+
+void Graph::CalculateDepthsBFS( std::pair<int, std::queue<char>>& aStackDescriptor,
+                                const int                         aDepthValue )
+{
+    if ( aStackDescriptor.first == 0 )
+    {
+        return;
+    }
+
+    int lNewStackSizeAddition    = 0;
+    int lInitialCurrentStackSize = aStackDescriptor.first;
+
+    for ( int i = 0; i < lInitialCurrentStackSize; ++i )
+    {
+        const char lCurrentNode = aStackDescriptor.second.front();
+        aStackDescriptor.second.pop();
+        --aStackDescriptor.first;
+
+        for ( const char lNode : mAdjacencyMap[ lCurrentNode ] )
+        {
+            aStackDescriptor.second.push( lNode );
+            mDepthMap[ lNode ] = mDepthMap[ lNode ] < aDepthValue
+                                 ? aDepthValue
+                                 : mDepthMap[ lNode ];
+            ++lNewStackSizeAddition;
+        }
+    }
+
+    aStackDescriptor.first += lNewStackSizeAddition;
+
+    return CalculateDepthsBFS( aStackDescriptor, aDepthValue + 1 );
 }
 
 void Graph::FindIndependentNodes( std::list<char>& aIndependents )
@@ -143,7 +184,7 @@ void Graph::PrintDependencyTree()
         throw std::runtime_error( "No independent nodes found. Graph either has got no nodes, or graph is cyclic." );
     }
 
-    CalculateDepths();
+    CalculateDepths( lIndependents );
 
     std::map<int, std::list<char>> lDepthTree;
 

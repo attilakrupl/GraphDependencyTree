@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <queue>
 #include <map>
 #include <set>
 #include <vector>

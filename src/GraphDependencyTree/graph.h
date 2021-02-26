@@ -40,8 +40,19 @@ namespace nGraph
 
         /*!
          * Calculates the node depths using BFS
+         *
+         * \param   aInitialIndependents   the initial independent nodes
          */
-        void CalculateDepths();
+        void CalculateDepths( const std::list<char>& aInitialIndependents );
+
+        /*!
+         * Traverses the graph with BFS algorithm and calculates depths of the nodes
+         *
+         * \param   aStackDescriptor   the stack descriptor containing the stack to unwind and the size of the current depth level
+         * \param   aDepthValue        the depth value of the nodes unwinding in current iteration
+         */
+        void CalculateDepthsBFS( std::pair<int, std::queue<char>>& aStackDescriptor,
+                                 const int                         aDepthValue );
 
         /*!
          * Finds independent nodes in graph
