@@ -39,5 +39,14 @@ int main( [[maybe_unused]] int    argc,
         }
     }
 
+    {
+        const int lTestResult = GraphDependencyTreeTest::ComplexGraphTestCase();
+
+        if ( lTestResult != 0 )
+        {
+            return lTestResult;
+        }
+    }
+
     return 0;
 }

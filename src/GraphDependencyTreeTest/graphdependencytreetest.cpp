@@ -89,3 +89,40 @@ int GraphDependencyTreeTest::InvalidNodeIDTestCase()
     std::cout << "Test result is false positive" << std::endl;
     return -3;
 }
+
+int GraphDependencyTreeTest::ComplexGraphTestCase()
+{
+    try
+    {
+        nGraph::Graph lGraph;
+
+        lGraph.AddEdge( 'a', 'e' );
+        lGraph.AddEdge( 'b', 'e' );
+        lGraph.AddEdge( 'e', 'h' );
+        lGraph.AddEdge( 'h', 'i' );
+        lGraph.AddEdge( 'e', 'f' );
+        lGraph.AddEdge( 'c', 'f' );
+        lGraph.AddEdge( 'f', 'g' );
+        lGraph.AddEdge( 'd', 'g' );
+        lGraph.AddEdge( 'g', 'h' );
+        lGraph.AddEdge( 'n', 'm' );
+        lGraph.AddEdge( 'm', 'l' );
+        lGraph.AddEdge( 'l', 'k' );
+        lGraph.AddEdge( 'k', 'j' );
+        lGraph.AddEdge( 'j', 'i' );
+
+        lGraph.PrintDependencyTree();
+    }
+    catch( const std::runtime_error& aException )
+    {
+        std::cout << aException.what() << std::endl;
+        return -1;
+    }
+    catch( ... )
+    {
+        std::cout << "Unexpected error occurred" << std::endl;
+        return -2;
+    }
+
+    return 0;
+}

@@ -34,5 +34,12 @@ namespace nTests
          * \return a negative error code in case of error, 0 otherwise
          */
         static int InvalidNodeIDTestCase();
+
+        /*!
+         * Complex graph test case
+         *
+         * \return a negative error code in case of error, 0 otherwise
+         */
+        static int ComplexGraphTestCase();
     };
 }
