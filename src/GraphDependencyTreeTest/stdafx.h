@@ -1,11 +1,13 @@
 /*!
- * \file      stdafx.h
- * \author    attila.krupl
- * \date      2021/02/24
+ * \file   stdafx.h
+ * \author Attila Krüpl dr.
+ * \date   27/02/2021
  */
 
 #pragma once
 
 #include "graphdependencytree.h"
+
+#include "defines.h"
 
 #include "graphdependencytreetest.h"

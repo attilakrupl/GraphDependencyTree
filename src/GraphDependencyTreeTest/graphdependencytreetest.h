@@ -1,13 +1,17 @@
 /*!
- * \file      GraphDependencyTreeTest.h
- * \author    attila.krupl
- * \date      2021/02/25
+ * \file   graphdependencytreetest.h
+ * \author Attila Krüpl dr.
+ * \date   27/02/2021
  */
 
 #pragma once
 
 namespace nTests
 {
+    /*!
+     * \class GraphDependencyTreeTest
+     * \brief The graph dependency tree generator library's test functions
+     */
     class GraphDependencyTreeTest final
     {
     private:

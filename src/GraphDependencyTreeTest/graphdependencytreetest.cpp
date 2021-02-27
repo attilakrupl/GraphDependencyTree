@@ -1,7 +1,7 @@
 /*!
- * \file      GraphDependencyTreeTest.cpp
- * \author    attila.krupl
- * \date      2021/02/25
+ * \file   graphdependencytreetest.cpp
+ * \author Attila Krüpl dr.
+ * \date   27/02/2021
  */
 
 #include "stdafx.h"

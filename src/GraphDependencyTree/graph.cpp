@@ -1,7 +1,7 @@
 ﻿/*!
- * \file      graph.cpp
- * \author    attila.krupl
- * \date      2021/02/25
+ * \file   graph.cpp
+ * \author Attila Krüpl dr.
+ * \date   27/02/2021
  */
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ const bool Graph::IsCyclic()
 
     for ( [[maybe_unused]] const auto& [ lKey, lValue ] : mAdjacencyMap )
     {
-        if ( IsCyclicHelper( lKey, lVisited, lRecursiveStack ) )
+        if ( IsCyclicDFS( lKey, lVisited, lRecursiveStack ) )
         {
             return true;
         }
@@ -30,21 +30,19 @@ const bool Graph::IsCyclic()
     return false;
 }
 
-const bool Graph::IsCyclicHelper( const char            aNode,
-                                  std::map<char, bool>& aVisited,
-                                  std::map<char, bool>& aRecursiveStack )
+const bool Graph::IsCyclicDFS( const char            aNode,
+                               std::map<char, bool>& aVisited,
+                               std::map<char, bool>& aRecursiveStack )
 {
     if ( aVisited[ aNode ] == false )
     {
         aVisited[ aNode ]        = true;
         aRecursiveStack[ aNode ] = true;
 
-        std::list<char>::iterator lIterator;
-
-        for ( lIterator = mAdjacencyMap[ aNode ].begin(); lIterator != mAdjacencyMap[ aNode ].end(); ++lIterator )
+        for ( auto lIterator = mAdjacencyMap[ aNode ].cbegin(); lIterator != mAdjacencyMap[ aNode ].cend(); ++lIterator )
         {
             if ( !aVisited[ *lIterator ]
-               && IsCyclicHelper( *lIterator, aVisited, aRecursiveStack ) )
+               && IsCyclicDFS( *lIterator, aVisited, aRecursiveStack ) )
             {
                 return true;
             }
@@ -59,30 +57,22 @@ const bool Graph::IsCyclicHelper( const char            aNode,
     return false;
 }
 
-void Graph::CalculateDepths( const std::list<char>& aInitialIndependents )
+void Graph::CalculateDepths( StackDescriptor& aInitialIndependents )
 {
-    std::pair<int, std::queue<char>> lStackDescriptor;
-    int                              lCurrentDepthValue = 1;
-
-    for ( const char& lNode : aInitialIndependents )
-    {
-        lStackDescriptor.second.push( lNode );
-        ++lStackDescriptor.first;
-    }
-
-    CalculateDepthsBFS( lStackDescriptor, ++lCurrentDepthValue );
+    const int lInitialDepthValue = 2;
+    CalculateDepthsBFS( aInitialIndependents, lInitialDepthValue );
 }
 
-void Graph::CalculateDepthsBFS( std::pair<int, std::queue<char>>& aStackDescriptor,
-                                const int                         aDepthValue )
+void Graph::CalculateDepthsBFS( StackDescriptor& aStackDescriptor,
+                                const int        aDepthValue )
 {
     if ( aStackDescriptor.first == 0 )
     {
         return;
     }
 
-    int lNewStackSizeAddition    = 0;
-    int lInitialCurrentStackSize = aStackDescriptor.first;
+    int       lNewStackSizeAddition    = 0;
+    const int lInitialCurrentStackSize = aStackDescriptor.first;
 
     for ( int i = 0; i < lInitialCurrentStackSize; ++i )
     {
@@ -105,30 +95,31 @@ void Graph::CalculateDepthsBFS( std::pair<int, std::queue<char>>& aStackDescript
     return CalculateDepthsBFS( aStackDescriptor, aDepthValue + 1 );
 }
 
-void Graph::FindIndependentNodes( std::list<char>& aIndependents )
+void Graph::FindIndependentNodes( StackDescriptor& aIndependents ) const
 {
     for ( const auto& [ lKey, lValue ] : mDepthMap )
     {
         if ( lValue == 1 )
         {
-            aIndependents.push_back( lKey );
+            aIndependents.second.push( lKey );
+            ++aIndependents.first;
         }
     }
 }
 
-void Graph::CreateDepthTree( std::map<int, std::list<char>>& aDepthTree )
+void Graph::CreateDepthResultTree( DepthResultTree& aDepthResultTree ) const
 {
     for ( const auto& [ lKey, lValue ] : mDepthMap )
     {
-        aDepthTree[ lValue ].push_back( lKey );
+        aDepthResultTree[ lValue ].push_back( lKey );
     }
 }
 
-void Graph::DoPrint( const std::map<int, std::list<char>>& aDepthTree )
+void Graph::DoPrint( const DepthResultTree& aDepthResultTree ) const
 {
     std::cout << "Depth\t\t" << "Nodes" << std::endl;
 
-    for ( const auto& [ lDepth, lList ] : aDepthTree )
+    for ( const auto& [ lDepth, lList ] : aDepthResultTree )
     {
         std::cout << lDepth << "\t\t";
 
@@ -141,13 +132,17 @@ void Graph::DoPrint( const std::map<int, std::list<char>>& aDepthTree )
     }
 }
 
+const bool Graph::IsLowercaseLetter( const char aLetter ) const
+{
+    return( ( aLetter >= 'a' )
+          && ( aLetter <= 'z' ) );
+}
+
 void Graph::AddEdge( const char aFromNode,
                      const char aToNode )
 {
-    if ( ( ( aFromNode < 'a' )
-         || ( aFromNode > 'z' ) )
-       || ( ( aToNode < 'a' )
-          || ( aToNode > 'z' ) ) )
+    if ( !IsLowercaseLetter( aFromNode )
+       || !IsLowercaseLetter( aToNode ) )
     {
         throw std::runtime_error( "Invalid character provided as node ID." );
     }
@@ -175,20 +170,20 @@ void Graph::PrintDependencyTree()
         throw std::runtime_error( "Directed Graph is cyclic. Please provide a Directed Acyclic Graph." );
     }
 
-    std::list<char> lIndependents;
+    StackDescriptor lStackDescriptor;
 
-    FindIndependentNodes( lIndependents );
+    FindIndependentNodes( lStackDescriptor );
 
-    if ( lIndependents.empty() )
+    if ( lStackDescriptor.first == 0 )
     {
         throw std::runtime_error( "No independent nodes found. Graph either has got no nodes, or graph is cyclic." );
     }
 
-    CalculateDepths( lIndependents );
+    CalculateDepths( lStackDescriptor );
 
-    std::map<int, std::list<char>> lDepthTree;
+    DepthResultTree lDepthTree;
 
-    CreateDepthTree( lDepthTree );
+    CreateDepthResultTree( lDepthTree );
 
     DoPrint( lDepthTree );
 }

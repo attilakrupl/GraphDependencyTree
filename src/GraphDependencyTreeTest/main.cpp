@@ -1,12 +1,11 @@
 /*!
- * \file      main.cpp
- * \author    attila.krupl
- * \date      2021/02/24
+ * \file   main.cpp
+ * \author Attila Krüpl dr.
+ * \date   27/02/2021
  */
 
 #include "stdafx.h"
 
-using namespace std;
 using namespace nTests;
 
 int main( [[maybe_unused]] int    argc,
@@ -14,38 +13,22 @@ int main( [[maybe_unused]] int    argc,
 {
     {
         const int lTestResult = GraphDependencyTreeTest::InitialTestCase();
-
-        if ( lTestResult != 0 )
-        {
-            return lTestResult;
-        }
+        EVALUATE_TEST_RESULT( lTestResult, "InitialTestCase" );
     }
 
     {
         const int lTestResult = GraphDependencyTreeTest::CyclicGraphFailingTestCase();
-
-        if ( lTestResult != 0 )
-        {
-            return lTestResult;
-        }
+        EVALUATE_TEST_RESULT( lTestResult, "CyclicGraphFailingTestCase" );
     }
 
     {
         const int lTestResult = GraphDependencyTreeTest::InvalidNodeIDTestCase();
-
-        if ( lTestResult != 0 )
-        {
-            return lTestResult;
-        }
+        EVALUATE_TEST_RESULT( lTestResult, "InvalidNodeIDTestCase" );
     }
 
     {
         const int lTestResult = GraphDependencyTreeTest::ComplexGraphTestCase();
-
-        if ( lTestResult != 0 )
-        {
-            return lTestResult;
-        }
+        EVALUATE_TEST_RESULT( lTestResult, "ComplexGraphTestCase" );
     }
 
     return 0;
