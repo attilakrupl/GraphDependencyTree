@@ -27,3 +27,4 @@ Commandline build steps:
 ## Testing
 
 Application can be tested with `.\build\src\GraphDependencyTreeTest\GraphDependencyTreeTest(.exe)`
+For addition test cases graphdependencytreetest class can be amended, additional test functions can be added.
