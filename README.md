@@ -1,5 +1,4 @@
 # GraphDependencyTree
-AImotive homework
 
 ## Compilation
 
